@@ -647,58 +647,76 @@ const dbIngRecetas = [
 let opcion
 let botonIr = document.getElementById("ir");
 let trueOrFalse = true;
+
+let modalListado
+let closeModal
+
+
 botonIr.addEventListener("click", menu);
 
-let modalListado 
-let closeModal 
+
 
 function cerrarmodal() {
+    //alert("entre a novisible")
     closeModal = document.getElementById("close");
     modalListado = document.getElementById("modal");
-    closeModal.onclick = function(){
+    closeModal.onclick = function () {
         modalListado.style.visibility = "hidden";
     }
 
 }
 
-function menu() {
-    // let opcion = (prompt("Elije una opción \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"));
-    opcion = document.getElementById("iOpcion").value;
-    while (trueOrFalse) {
+function visiblemodal() {
+    //alert("entre a visible")
 
-        switch (opcion) {
-            case "1":
-                lingredientes();
-                break;
-            case "2":
-                lunidades();
-                break;
-            case "3":
-                lunidadesrel();
-                break;
-            case "4":
-                lingreceta();
-                break;
-            case "5":
-                lrecetas();
-                break;
-            case "6":
-                vcostoreceta();
-                break;
-            case "10":
-                trueOrFalse = false;
-                break;
-            default:
-                alert("No has elegido una opción válida");
-                /*/opcion = prompt(
-                "Elije una opción \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"
-                );*/
-                //opcion = document.getElementById("iOpcion").value;
-                trueOrFalse = false;
-                break;
-        }
-    }
+    modalListado = document.getElementById("modal");
+    modalListado.style.visibility = "visible";
+    closeModal = document.getElementById("close");
+    closeModal.style.visibility = "visible";
+
 }
+
+function menu() {
+    // saco el while porque al trabajar con el DOM no se necesita
+
+    opcion = document.getElementById("iOpcion").value;
+    switch (opcion) {
+        case "1":
+            lingredientes();
+            break;
+        case "2":
+            lunidades();
+            //cerrarmodal();
+            //visiblemodal();
+            break;
+        case "3":
+            lunidadesrel();
+            break;
+        case "4":
+            lingreceta();
+            break;
+        case "5":
+            lrecetas();
+            break;
+        case "6":
+            vcostoreceta();
+            break;
+        case "10":
+            trueOrFalse = false;
+            break;
+        default:
+            alert("No has elegido una opción válida");
+            /*/opcion = prompt(
+            "Elije una opción \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"
+            );*/
+            //opcion = document.getElementById("iOpcion").value;
+            trueOrFalse = false;
+            break;
+    }
+    cerrarmodal();
+    visiblemodal();
+}
+
 
 function lingredientes() {
     let ingredientes = "";
@@ -709,75 +727,103 @@ function lingredientes() {
     //alert(ingredientes);
     //console.log(cabezal)
     //console.log(ingredientes)
-    let contenedor = document.getElementById("titulos") 
+    let contenedor = document.getElementById("titulos")
     contenedor.innerHTML = "<h2><br> Lista de ingredientes disponibles</h2><br><p>Se lista el nombre, la unidad de empaquetado y precio en U$S </p><br>"
-    
+
     let detalle = ingredientes
     document.getElementById("detalle").innerHTML = detalle
     //menu();
-    cerrarmodal()
+
 }
 
 function lunidades() {
     let unidades = "";
-    let cabezal = "ID   Nombre"
+    //let cabezal = "ID   Nombre"
     dbUnidades.forEach((uni) => {
-        unidades += uni.id + "  " + uni.nombre + "\n";
+        unidades += uni.id + "     " + uni.nombre + "<br><br>";
     });
 
-    console.log(cabezal)
-    console.log(unidades)
-    menu();
+    //console.log(cabezal)
+    //console.log(unidades)
+    //menu();
+    let contenedor = document.getElementById("titulos")
+    contenedor.innerHTML = "<h2><br> Lista de unidades de medida</h2><br><p>Se lista el codigo y el nombre</p><br>"
+    let detalle = unidades
+    document.getElementById("detalle").innerHTML = detalle
+
 }
 
 function lunidadesrel() {
     let unidadesrel = "";
-    let cabezal = "UnidadA     UnidadB   Ingrediente  Factor AxFB"
+    //let cabezal = "UnidadA     UnidadB   Ingrediente  Factor AxFB"
     dbUnidadesequiv.forEach((uni) => {
-        unidadesrel += uni.unidadA + "       " + uni.unidadB + "  " + uni.ingrediente + "  " + uni.conversion + "\n";
+        unidadesrel += uni.unidadA + "       " + uni.conversion + "   " + uni.unidadB + "   " + uni.ingrediente + "<br><br>";
     });
 
-    console.log(cabezal)
-    console.log(unidadesrel)
-    menu();
+    //console.log(cabezal)
+    //console.log(unidadesrel)
+    //menu();
+    let contenedor = document.getElementById("titulos")
+    contenedor.innerHTML = "<h2><br> Lista de unidades de uso, envasado y su equivalencia.</h2><br><p>Se lista UnidadA == UnidadB y factor de conversion</p><br>"
+    let detalle = unidadesrel
+    document.getElementById("detalle").innerHTML = detalle
 }
 
 function lingreceta() {
 
-    let unareceta = prompt("Ingrese el nombre de una receta");
+    //let unareceta = prompt("Ingrese el nombre de una receta");
+    let unareceta = document.getElementById("iReceta").value;
+    //alert("unareceta" + unareceta)
+    let ingredientesDeReceta = "";
     let recetaEncontrada = dbIngRecetas.filter(
         (elm) => elm.idreceta === unareceta
     );
 
     if (recetaEncontrada.length > 0) {
         recetaEncontrada.forEach((elm) => {
-            console.log(elm.iding + "   " + elm.canting + "   " + elm.unidading);
+            //console.log(elm.iding + "   " + elm.canting + "   " + elm.unidading);
+            ingredientesDeReceta += elm.iding + "   " + elm.canting + "   " + elm.unidading + "<br><br>";
         });
     } else {
         alert("La receta no existe");
     }
-    menu();
+
+    let contenedor = document.getElementById("titulos")
+    contenedor.innerHTML = "<h2><br> Lista de los ingredientes de una receta. </h2><br><p>Se lista el ingrediente, su cantidad y unidad necesarias.</p><br>";
+    alert("receta encontada " + ingredientesDeReceta);
+    let detalle = ingredientesDeReceta;
+    document.getElementById("detalle").innerHTML = detalle;
 }
 
 function lrecetas() {
     let recetas = "";
-    let cabezal = "Receta   Porciones   Preparacion"
+
     dbRecetas.forEach((receta) => {
-        recetas += receta.nombre + "       " + receta.porciones + "  " + receta.recetadesc + "\n";
+        recetas += receta.nombre + "       " + receta.porciones + "  " + receta.recetadesc + "<br><br>";
     });
 
-    console.log(cabezal)
-    console.log(recetas)
-    menu();
+    let contenedor = document.getElementById("titulos")
+    contenedor.innerHTML = "<h2><br> Lista de recetas disponibles</h2><br><p>Se lista el nombre, las porciones y como prepararla.n</p><br>"
+    let detalle = recetas;
+    document.getElementById("detalle").innerHTML = detalle
+
 }
 
 
 function vcostoreceta() {
     /* Funcion que calcula el costo de una receta y da la opcion de calcular un precio de venta a partir de un porcentaje expresado con un entero.
     Si encuentra la receta en el array llama a la funcion buscarprecio de un ingrediente, unidad y cantidad.*/
+    
     var mostrarprecioreceta = 0;
-    let porcentajeganancia;
-    let unareceta = prompt("Ingrese el nombre de una receta");
+    let porcentajeGanancia
+    
+    let contenedor = document.getElementById("titulos")
+        
+    contenedor.innerHTML = `<h2><br> Calculo de costo y precio de venta de una receta</h2><br>
+                            <p>Se muestra el costo calculado y si se ingresa un porcentaje el precio de venta</p><br>`
+    
+    
+    let unareceta = document.getElementById("iReceta").value;
     let recetaEncontrada = dbIngRecetas.filter(
         (elm) => elm.idreceta === unareceta
     );
@@ -790,22 +836,30 @@ function vcostoreceta() {
         });
 
 
-        alert("El precio de costo en U$S es" + " " + mostrarprecioreceta.toFixed(2));
 
-        porcentajeganancia = parseInt(prompt("Si lo desea, ingrese el numero del porcentje a aplicar para calcular precio de venta"));
+        let detalle = "<br><br>El precio de costo en U$S es" + " " + mostrarprecioreceta.toFixed(2) + "<br></br>";
+        document.getElementById("detalle").innerHTML = detalle;
 
-        if (porcentajeganancia > 0) {
-            let precioventa = mostrarprecioreceta * (1 + (porcentajeganancia / 100))
-            alert("El precio de venta en U$S es" + " " + precioventa.toFixed(2))
+        //porcentajeganancia = parseInt(prompt("Si lo desea, ingrese el numero del porcentje a aplicar para calcular precio de venta"));
+        porcentajeGanancia = document.getElementById("iGanancia").value;
+        alert("ganancia  " + porcentajeGanancia)
+        if (porcentajeGanancia > 0) {
+            
+            let precioventa = mostrarprecioreceta * (1 + (porcentajeGanancia / 100));
+            detalle += "<br></br>El precio de venta en U$S es" + " " + precioventa.toFixed(2) + "<br></br>";
+            document.getElementById("detalle").innerHTML = detalle;
+            
         } else {
-
-            alert("No se calculara precio de venta")
+            detalle += "<br>No se calculara precio de venta<br><br>";
+            document.getElementById("detalle").innerHTML = detalle;
         }
     } else {
-        alert("La receta no existe");
+        //alert("La receta no existe");
+        detalle = "<br><br>La receta no existe<br><br>";
+        document.getElementById("detalle").innerHTML = detalle;
     }
 
-    menu();
+   
 }
 
 
@@ -814,7 +868,7 @@ function buscarprecio(pingrediente, punidad, pcanting) {
     El ingrediente en una receta puede tener una unidad de medida distinta a la unidad de su precio, 
     por lo que si no encuentra el precio en la misma unidad, busca en el array equivalencias para ver si hay una conversion y asi calcular el costo,
     Hay equivalencias en relacion uno a uno, y hay equivalencias una a varios ingredientes. */
-    
+
     var precioreceta = 0
     var cantidadconequivalencia = 0;
     let ingredienteencontrado = dbIngredientes.filter(
@@ -856,4 +910,3 @@ function buscarprecio(pingrediente, punidad, pcanting) {
     }
 }
 
-//menu(); para que no se ejecute en el cambio a HTML
