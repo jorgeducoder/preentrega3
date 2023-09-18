@@ -20,7 +20,7 @@
 
 /* modal */
 
-/*.modal-container {
+.container {
     position: absolute;
     top: 0;
     left: 0;
@@ -29,15 +29,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(128, 128, 128, 0.1);
-    z-index: 1;
+    background-color: rgb(128, 128, 128);
+    /*z-index: 1;*/
     
 
-}*/
+}
+
+.opciones-elegir{
+    display: inline-block;
+
+}
+
 
 .modal-content {
     width: 600px;
     height: auto;
+    margin-left: 50px;
     padding: 10px;
     border-radius: 10px;
     border-color: black;

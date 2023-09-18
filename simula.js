@@ -651,6 +651,8 @@ let trueOrFalse = true;
 let modalListado
 let closeModal
 
+iReceta.value = localStorage.getItem("receta")
+alert(iReceta.value)
 
 botonIr.addEventListener("click", menu);
 
@@ -770,10 +772,18 @@ function lunidadesrel() {
 }
 
 function lingreceta() {
+    // Dada una receta lista sus ingredientes.
+    // Se muestra la ultima receta consultada, y si la cambia se guarda en
+    // localstorage la nueva receta consultada.
 
-    //let unareceta = prompt("Ingrese el nombre de una receta");
-    let unareceta = document.getElementById("iReceta").value;
-    //alert("unareceta" + unareceta)
+    let unareceta;
+    
+    unareceta = document.getElementById("iReceta").value;
+    //unareceta = localStorage.getItem("receta")
+    alert("receta" + unareceta)
+    TrabajarConLocalStorage(unareceta)
+
+    
     let ingredientesDeReceta = "";
     let recetaEncontrada = dbIngRecetas.filter(
         (elm) => elm.idreceta === unareceta
@@ -785,14 +795,24 @@ function lingreceta() {
             ingredientesDeReceta += elm.iding + "   " + elm.canting + "   " + elm.unidading + "<br><br>";
         });
     } else {
+       
+       // falta aqui mensaje en el DOM
         alert("La receta no existe");
     }
 
     let contenedor = document.getElementById("titulos")
     contenedor.innerHTML = "<h2><br> Lista de los ingredientes de una receta. </h2><br><p>Se lista el ingrediente, su cantidad y unidad necesarias.</p><br>";
-    alert("receta encontada " + ingredientesDeReceta);
+    //alert("receta encontada " + ingredientesDeReceta);
     let detalle = ingredientesDeReceta;
     document.getElementById("detalle").innerHTML = detalle;
+}
+
+function TrabajarConLocalStorage(punareceta) {
+    // Guarda en LocalStorage la ultima receta consultada si no es la misma que la ya existente.
+    alert("entreLS"  + punareceta)
+    if (punareceta !== localStorage.getItem("receta")) {
+        localStorage.setItem("receta", punareceta)
+    }
 }
 
 function lrecetas() {
