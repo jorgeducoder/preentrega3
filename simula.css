@@ -56,57 +56,74 @@
 
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
-    font-size: medium;
-    color: beige;
+    font-size: larger;
+    color: rgb(12, 12, 11);
 }
 
 #opcion {
     margin: 15px;
+    font-weight: 200px;
+}
+
+#iOpcion {
+
+    width: 50px;
+    height: 25px;
+    border: 3px solid rgb(117, 78, 207);
+    font-weight: normal;
+    font-family: roboto;
 }
 
 #cReceta {
     margin: 15px;
+    font-weight: 200px;
+}
+
+#iReceta {
+    width: 130px;
+    height: 35px;
+    border: 3px solid rgb(117, 78, 207);
+    font-weight:normal;
+    font-family: roboto;
+    font-size: larger;
+
 }
 
 #porcentaje {
     margin: 15px;
+    font-weight: 200px;
+}
+
+#iGanancia {
+
+    width: 60px;
+    height: 30px;
+    border: 3px solid rgb(117, 78, 207);
+    font-weight: normal;
+    font-family: roboto;
+    font-size: larger;
 }
 
 #ir {
     margin: 15px;
-
     background-color: transparent;
     border: 3px solid white;
     color: white;
-    /* padding: 12px 26px;*/
-    text-align: center;
-    display: inline-block;
-    font-size: 14px;
+    
     font-weight: bold;
     font-family: roboto;
+    font-size: larger;
     cursor: pointer;
-    border-radius: 30px;
-    justify-content: center;
-
-    
-        /*font-size: 20px;*/
-        line-height: 50px;
-        text-align: center;
-        width: 100px;
-        height: 50px;
-      
+    border-radius: 40px;
+    line-height: 50px;
+    width: 100px;
+   
 }
-
-
 
 #ir:hover {
     background-color: white;
     color: black;
 }
-
-
-
-
 
 /* modal */
 

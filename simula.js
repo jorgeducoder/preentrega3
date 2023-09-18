@@ -648,8 +648,15 @@ let opcion
 let botonIr = document.getElementById("ir");
 let trueOrFalse = true;
 
-let modalListado
-let closeModal
+let modalListado;
+let closeModal;
+
+
+// defino variables para poner visible parrafo y cajas
+let verpReceta;
+let vertReceta;
+let verPorcentaje;
+let vernPorcentaje;
 
 // seteo la receta de sesion anterior 
 iReceta.value = localStorage.getItem("receta")
@@ -679,6 +686,7 @@ function visiblemodal() {
 
 }
 
+
 function menu() {
     // saco el while porque al trabajar con el DOM no se necesita
 
@@ -689,8 +697,6 @@ function menu() {
             break;
         case "2":
             lunidades();
-            //cerrarmodal();
-            //visiblemodal();
             break;
         case "3":
             lunidadesrel();
@@ -705,16 +711,14 @@ function menu() {
             vcostoreceta();
             break;
         case "7":
-            //trueOrFalse = false;
             expreceta();
             break;
-        //default:
-            alert("No has elegido una opción válida");
-            /*/opcion = prompt(
-            "Elije una opción \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"
-            );*/
-            //opcion = document.getElementById("iOpcion").value;
-            //trueOrFalse = false;
+        default:
+
+            let contenedor = document.getElementById("titulos");
+            contenedor.innerHTML = "<h2><br> No has elegido una opción válida</h2><br>";
+            let detalle = "";
+            document.getElementById("detalle").innerHTML = detalle;
             break;
     }
     cerrarmodal();
@@ -724,32 +728,24 @@ function menu() {
 
 function lingredientes() {
     let ingredientes = "";
-    //let cabezal = "Nombre  Unidad  Precio U$S"
     dbIngredientes.forEach((ing) => {
         ingredientes += ing.nombre + "    " + ing.unidad + "    " + ing.precio + "<br><br>";
     });
-    //alert(ingredientes);
-    //console.log(cabezal)
-    //console.log(ingredientes)
+
     let contenedor = document.getElementById("titulos")
     contenedor.innerHTML = "<h2><br> Lista de ingredientes disponibles</h2><br><p>Se lista el nombre, la unidad de empaquetado y precio en U$S </p><br>"
 
     let detalle = ingredientes
     document.getElementById("detalle").innerHTML = detalle
-    //menu();
-
 }
 
 function lunidades() {
     let unidades = "";
-    //let cabezal = "ID   Nombre"
+    
     dbUnidades.forEach((uni) => {
         unidades += uni.id + "     " + uni.nombre + "<br><br>";
     });
-
-    //console.log(cabezal)
-    //console.log(unidades)
-    //menu();
+    
     let contenedor = document.getElementById("titulos")
     contenedor.innerHTML = "<h2><br> Lista de unidades de medida</h2><br><p>Se lista el codigo y el nombre</p><br>"
     let detalle = unidades
@@ -759,14 +755,11 @@ function lunidades() {
 
 function lunidadesrel() {
     let unidadesrel = "";
-    //let cabezal = "UnidadA     UnidadB   Ingrediente  Factor AxFB"
+    
     dbUnidadesequiv.forEach((uni) => {
         unidadesrel += uni.unidadA + "       " + uni.conversion + "   " + uni.unidadB + "   " + uni.ingrediente + "<br><br>";
     });
 
-    //console.log(cabezal)
-    //console.log(unidadesrel)
-    //menu();
     let contenedor = document.getElementById("titulos")
     contenedor.innerHTML = "<h2><br> Lista de unidades de uso, envasado y su equivalencia.</h2><br><p>Se lista UnidadA == UnidadB y factor de conversion</p><br>"
     let detalle = unidadesrel
@@ -779,13 +772,11 @@ function lingreceta() {
     // localstorage la nueva receta consultada.
 
     let unareceta;
-    
+
     unareceta = document.getElementById("iReceta").value;
-    //unareceta = localStorage.getItem("receta")
-    alert("receta" + unareceta)
+    
     TrabajarConLocalStorage(unareceta)
 
-    
     let ingredientesDeReceta = "";
     let recetaEncontrada = dbIngRecetas.filter(
         (elm) => elm.idreceta === unareceta
@@ -797,8 +788,8 @@ function lingreceta() {
             ingredientesDeReceta += elm.iding + "   " + elm.canting + "   " + elm.unidading + "<br><br>";
         });
     } else {
-       
-       // falta aqui mensaje en el DOM
+
+        // falta aqui mensaje en el DOM
         alert("La receta no existe");
     }
 
@@ -811,7 +802,7 @@ function lingreceta() {
 
 function TrabajarConLocalStorage(punareceta) {
     // Guarda en LocalStorage la ultima receta consultada si no es la misma que la ya existente.
-    alert("entreLS"  + punareceta)
+    
     if (punareceta !== localStorage.getItem("receta")) {
         localStorage.setItem("receta", punareceta)
     }
@@ -835,16 +826,16 @@ function lrecetas() {
 function vcostoreceta() {
     /* Funcion que calcula el costo de una receta y da la opcion de calcular un precio de venta a partir de un porcentaje expresado con un entero.
     Si encuentra la receta en el array llama a la funcion buscarprecio de un ingrediente, unidad y cantidad.*/
-    
+
     var mostrarprecioreceta = 0;
     let porcentajeGanancia
-    
+
     let contenedor = document.getElementById("titulos")
-        
+
     contenedor.innerHTML = `<h2><br> Calculo de costo y precio de venta de una receta</h2><br>
                             <p>Se muestra el costo calculado y si se ingresa un porcentaje el precio de venta</p><br>`
-    
-    
+
+
     let unareceta = document.getElementById("iReceta").value;
     let recetaEncontrada = dbIngRecetas.filter(
         (elm) => elm.idreceta === unareceta
@@ -862,26 +853,25 @@ function vcostoreceta() {
         let detalle = "<br><br>El precio de costo en U$S es" + " " + mostrarprecioreceta.toFixed(2) + "<br></br>";
         document.getElementById("detalle").innerHTML = detalle;
 
-        //porcentajeganancia = parseInt(prompt("Si lo desea, ingrese el numero del porcentje a aplicar para calcular precio de venta"));
         porcentajeGanancia = document.getElementById("iGanancia").value;
-        alert("ganancia  " + porcentajeGanancia)
+        
         if (porcentajeGanancia > 0) {
-            
+
             let precioventa = mostrarprecioreceta * (1 + (porcentajeGanancia / 100));
             detalle += "<br></br>El precio de venta en U$S es" + " " + precioventa.toFixed(2) + "<br></br>";
             document.getElementById("detalle").innerHTML = detalle;
-            
+
         } else {
             detalle += "<br>No se calculara precio de venta<br><br>";
             document.getElementById("detalle").innerHTML = detalle;
         }
     } else {
-        //alert("La receta no existe");
+        
         detalle = "<br><br>La receta no existe<br><br>";
         document.getElementById("detalle").innerHTML = detalle;
     }
 
-   
+
 }
 
 
@@ -932,7 +922,7 @@ function buscarprecio(pingrediente, punidad, pcanting) {
     }
 }
 
-function expreceta () {
+function expreceta() {
     const recetastring = JSON.stringify(dbIngRecetas);
     console.log(recetastring)
 
