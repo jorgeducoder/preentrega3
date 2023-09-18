@@ -651,8 +651,9 @@ let trueOrFalse = true;
 let modalListado
 let closeModal
 
+// seteo la receta de sesion anterior 
 iReceta.value = localStorage.getItem("receta")
-alert(iReceta.value)
+
 
 botonIr.addEventListener("click", menu);
 
@@ -703,16 +704,17 @@ function menu() {
         case "6":
             vcostoreceta();
             break;
-        case "10":
-            trueOrFalse = false;
+        case "7":
+            //trueOrFalse = false;
+            expreceta();
             break;
-        default:
+        //default:
             alert("No has elegido una opción válida");
             /*/opcion = prompt(
             "Elije una opción \n \n Por consola \n 1. Ver ingredientes \n 2. Ver unidades \n 3. Ver equivalencias entre unidades \n 4. Ver ingredientes de una receta \n 5. Ver mis recetas \n\n Por alert \n 6. Ver costo de una receta \n \n 10. Salir"
             );*/
             //opcion = document.getElementById("iOpcion").value;
-            trueOrFalse = false;
+            //trueOrFalse = false;
             break;
     }
     cerrarmodal();
@@ -930,3 +932,14 @@ function buscarprecio(pingrediente, punidad, pcanting) {
     }
 }
 
+function expreceta () {
+    const recetastring = JSON.stringify(dbIngRecetas);
+    console.log(recetastring)
+
+    let contenedor = document.getElementById("titulos")
+    contenedor.innerHTML = "<h2><br> Recetas a exportar</h2><br><p> Archivo de texto plano con todas las recetas.</p><br>"
+    let detalle = recetastring;
+    document.getElementById("detalle").innerHTML = detalle
+
+
+}
